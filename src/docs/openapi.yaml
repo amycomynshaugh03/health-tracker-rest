@@ -8,6 +8,7 @@ info:
     email: studentnumber@setu.ie
 
 paths:
+
   /api/users:
     get:
       responses:
@@ -37,14 +38,122 @@ paths:
         - $ref: '#/components/parameters/UserIdPath'
       responses:
         200:
-          description: This is a specifc user in the app
+          description: This is a specific user in the app
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
 
+    delete:
+      parameters:
+        - $ref: '#/components/parameters/UserIdPath'
+      responses:
+        200:
+          description: The user has been deleted
+
+    patch:
+      parameters:
+        - $ref: '#/components/parameters/UserIdPath'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        200:
+          description: The user has been updated
+
+  /api/users/email/{email}:
+    get:
+      parameters:
+        - $ref: '#/components/parameters/EmailPath'
+      responses:
+        200:
+          description: This is the user with the specified email
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+  /api/users/{user-id}/activities:
+    get:
+      parameters:
+        - $ref: '#/components/parameters/UserIdPath'
+      responses:
+        200:
+          description: This is a list of activities for the specified user
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Activity'
+
+    delete:
+      parameters:
+        - $ref: '#/components/parameters/UserIdPath'
+      responses:
+        200:
+          description: The user's activities have been deleted
+
+  /api/activities:
+    get:
+      responses:
+        200:
+          description: This is a list of activities
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Activity'
+
+    post:
+      description: Add an activity to the app
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Activity'
+      responses:
+        200:
+          description: The activity has been created
+
+  /api/activities/{activity-id}:
+    get:
+      parameters:
+        - $ref: '#/components/parameters/ActivityIdPath'
+      responses:
+        200:
+          description: This is a specific activity in the app
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Activity'
+
+    delete:
+      parameters:
+        - $ref: '#/components/parameters/ActivityIdPath'
+      responses:
+        200:
+          description: The activity has been deleted
+
+    patch:
+      parameters:
+        - $ref: '#/components/parameters/ActivityIdPath'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Activity'
+      responses:
+        200:
+          description: The activity has been updated
+
 components:
+
   parameters:
+
     UserIdPath:
       in: path
       name: user-id
@@ -54,7 +163,26 @@ components:
         type: integer
         example: 3232
 
+    ActivityIdPath:
+      in: path
+      name: activity-id
+      description: Activity id path parameter
+      required: true
+      schema:
+        type: integer
+        example: 1234
+
+    EmailPath:
+      in: path
+      name: email
+      description: User email path parameter
+      required: true
+      schema:
+        type: string
+        example: joe@soap.com
+
   schemas:
+
     User:
       type: object
       properties:
@@ -67,3 +195,19 @@ components:
         email:
           type: string
           example: joe@soap.com
+
+    Activity:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1234
+        userId:
+          type: integer
+          example: 3232
+        type:
+          type: string
+          example: Running
+        duration:
+          type: integer
+          example: 30
