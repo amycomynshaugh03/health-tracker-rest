@@ -13,7 +13,7 @@ class DbConfig {
 
         val PGHOST = System.getenv("POSTGRESQL_HOST") ?: "localhost"
         val PGPORT = System.getenv("POSTGRESQL_SERVICE_PORT") ?: "5432"
-        val PGDATABASE = System.getenv("POSTGRESQL_DATABASE") ?: "defaultdb"
+        val PGDATABASE = System.getenv("POSTGRESQL_DATABASE") ?: "healthtrackerdb"
         val PGUSER = System.getenv("POSTGRESQL_USER") ?: "defaultuser"
         val PGPASSWORD = System.getenv("POSTGRESQL_PASSWORD") ?: "defaultpass"
 
