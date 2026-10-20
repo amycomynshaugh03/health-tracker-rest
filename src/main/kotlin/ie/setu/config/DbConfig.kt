@@ -11,9 +11,10 @@ class DbConfig {
 
     fun getDbConnection(): Database {
 
-        val PGHOST = System.getenv("POSTGRESQL_HOST") ?: "localhost"
+        val rawHost = System.getenv("POSTGRESQL_HOST") ?: "localhost"
+        val PGHOST = rawHost.substringAfterLast("://")
         val PGPORT = System.getenv("POSTGRESQL_SERVICE_PORT") ?: "5432"
-        val PGDATABASE = System.getenv("POSTGRESQL_DATABASE") ?: "healthtrackerdb"
+        val PGDATABASE = System.getenv("POSTGRESQL_DATABASE") ?: "defaultdb"
         val PGUSER = System.getenv("POSTGRESQL_USER") ?: "defaultuser"
         val PGPASSWORD = System.getenv("POSTGRESQL_PASSWORD") ?: "defaultpass"
 
