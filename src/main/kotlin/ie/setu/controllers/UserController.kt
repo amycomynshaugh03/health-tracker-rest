@@ -1,9 +1,8 @@
 package ie.setu.controllers
 
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
 import ie.setu.domain.User
 import ie.setu.domain.repository.UserDAO
+import ie.setu.utils.jsonToObject
 import io.javalin.http.Context
 
 object UserController {
@@ -22,8 +21,7 @@ object UserController {
     }
 
     fun addUser(ctx: Context) {
-        val mapper = jacksonObjectMapper()
-        val user = mapper.readValue<User>(ctx.body())
+        val user: User = jsonToObject(ctx.body())
         userDao.save(user)
         ctx.json(user)
     }
@@ -43,8 +41,7 @@ object UserController {
 
     fun updateUser(ctx: Context) {
         val userId = ctx.pathParam("user-id").toInt()
-        val mapper = jacksonObjectMapper()
-        val userUpdates = mapper.readValue<User>(ctx.body())
+        val userUpdates: User = jsonToObject(ctx.body())
         userDao.update(userId, userUpdates)
     }
 }
