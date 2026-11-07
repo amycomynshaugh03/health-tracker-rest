@@ -202,12 +202,19 @@ components:
         id:
           type: integer
           example: 1234
-        userId:
-          type: integer
-          example: 3232
-        type:
+        description:
           type: string
           example: Running
         duration:
+          type: number
+          example: 22.5
+        calories:
           type: integer
-          example: 30
+          example: 230
+        started:
+          type: string
+          format: date-time
+          example: "2026-11-07T10:30:00.000Z"
+        userId:
+          type: integer
+          example: 3232

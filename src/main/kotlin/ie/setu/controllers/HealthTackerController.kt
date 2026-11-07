@@ -10,6 +10,7 @@ import ie.setu.domain.Activity
 import ie.setu.domain.repository.ActivityDAO
 import ie.setu.domain.repository.UserDAO
 import io.javalin.http.Context
+import ie.setu.utils.jsonToObject
 
 object HealthTrackerController {
 
@@ -87,6 +88,31 @@ object HealthTrackerController {
         val activity = mapper.readValue<Activity>(ctx.body())
         activityDAO.save(activity)
         ctx.json(activity)
+    }
+
+    fun deleteActivityByUserId(ctx: Context){
+        activityDAO.deleteByUserId(ctx.pathParam("user-id").toInt())
+    }
+
+    fun deleteActivityByActivityId(ctx: Context){
+        activityDAO.deleteByActivityId(ctx.pathParam("activity-id").toInt())
+    }
+
+    fun updateActivity(ctx: Context) {
+        val activity: Activity = jsonToObject(ctx.body())
+        if (activityDAO.updateByActivityId(
+                activityId = ctx.pathParam("activity-id").toInt(),
+                activityToUpdate = activity
+            ) != 0
+        )
+            ctx.status(204)
+    }
+
+    fun getActivityByActivityId(ctx: Context) {
+        val activity = activityDAO.findByActivityId(ctx.pathParam("activity-id").toInt())
+        if (activity != null) {
+            ctx.json(activity)
+        }
     }
 
 
