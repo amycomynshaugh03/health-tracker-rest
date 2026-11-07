@@ -3,7 +3,7 @@ name: Build and Deploy to OpenShift
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   build-deploy:
