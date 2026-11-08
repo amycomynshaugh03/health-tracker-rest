@@ -12,7 +12,13 @@ object ActivityController {
     private val activityDAO = ActivityDAO()
 
     fun getAllActivities(ctx: Context) {
-        ctx.json(activityDAO.getAll())
+        val activities = activityDAO.getAll()
+        if (activities.isNotEmpty()) {
+            ctx.status(200)
+        } else {
+            ctx.status(404)
+        }
+        ctx.json(activities)
     }
 
     fun getActivitiesByUserId(ctx: Context) {
@@ -20,7 +26,12 @@ object ActivityController {
             val activities = activityDAO.findByUserId(ctx.pathParam("user-id").toInt())
             if (activities.isNotEmpty()) {
                 ctx.json(activities)
+                ctx.status(200)
+            } else {
+                ctx.status(404)
             }
+        } else {
+            ctx.status(404)
         }
     }
 
@@ -28,21 +39,35 @@ object ActivityController {
         val activity = activityDAO.findByActivityId(ctx.pathParam("activity-id").toInt())
         if (activity != null) {
             ctx.json(activity)
+            ctx.status(200)
+        } else {
+            ctx.status(404)
         }
     }
 
     fun addActivity(ctx: Context) {
         val activity: Activity = jsonToObject(ctx.body())
-        activityDAO.save(activity)
-        ctx.json(activity)
+        if (userDao.findById(activity.userId) != null) {
+            activity.id = activityDAO.save(activity)
+            ctx.json(activity)
+            ctx.status(201)
+        } else {
+            ctx.status(404)
+        }
     }
 
     fun deleteActivityByUserId(ctx: Context) {
-        activityDAO.deleteByUserId(ctx.pathParam("user-id").toInt())
+        if (activityDAO.deleteByUserId(ctx.pathParam("user-id").toInt()) != 0)
+            ctx.status(204)
+        else
+            ctx.status(404)
     }
 
     fun deleteActivityByActivityId(ctx: Context) {
-        activityDAO.deleteByActivityId(ctx.pathParam("activity-id").toInt())
+        if (activityDAO.deleteByActivityId(ctx.pathParam("activity-id").toInt()) != 0)
+            ctx.status(204)
+        else
+            ctx.status(404)
     }
 
     fun updateActivity(ctx: Context) {
@@ -53,5 +78,7 @@ object ActivityController {
             ) != 0
         )
             ctx.status(204)
+        else
+            ctx.status(404)
     }
 }
