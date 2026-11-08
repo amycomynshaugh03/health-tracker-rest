@@ -1,0 +1,50 @@
+name: Build and Deploy to OpenShift
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+
+    - name: Setup Maven
+      uses: stCarolas/setup-maven@v5
+      with:
+        maven-version: 3.8.2
+
+    - name: Build the application with Maven
+      run: mvn clean package -DskipTests
+
+    - name: OpenShift Client Installer
+      uses: redhat-actions/oc-installer@v1.2
+
+    - name: Log in to OpenShift
+      env:
+        OPENSHIFT_API_URL: ${{ secrets.OPENSHIFT_API_URL }}
+        OPENSHIFT_TOKEN: ${{ secrets.OPENSHIFT_TOKEN }}
+      run: |
+        oc login $OPENSHIFT_API_URL --token=$OPENSHIFT_TOKEN --insecure-skip-tls-verify=true
+
+    - name: Set project to agile-26-amy-comynshaugh
+      run: |
+        oc project agile-26-amy-comynshaugh
+
+    - name: Build and deploy the app to OpenShift
+      run: |
+        oc start-build health-tracker-rest-git --from-dir=target/ --follow
+
+    - name: Check deployment status
+      run: |
+        oc rollout status deployment/health-tracker-rest-git
