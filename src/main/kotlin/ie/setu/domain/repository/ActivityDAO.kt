@@ -9,7 +9,6 @@ import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 
 class ActivityDAO {
 
-    //Get all the activities in the database regardless of user id
     fun getAll(): ArrayList<Activity> {
         val activitiesList: ArrayList<Activity> = arrayListOf()
         transaction {
@@ -19,7 +18,6 @@ class ActivityDAO {
         return activitiesList
     }
 
-    //Find a specific activity by activity id
     fun findByActivityId(id: Int): Activity?{
         return transaction {
             Activities
@@ -29,7 +27,6 @@ class ActivityDAO {
         }
     }
 
-    //Find all activities for a specific user id
     fun findByUserId(userId: Int): List<Activity>{
         return transaction {
             Activities
@@ -38,16 +35,15 @@ class ActivityDAO {
         }
     }
 
-    //Save an activity to the database
-    fun save(activity: Activity){
-        transaction {
+    fun save(activity: Activity): Int {
+        return transaction {
             Activities.insert {
                 it[description] = activity.description
                 it[duration] = activity.duration
                 it[started] = activity.started
                 it[calories] = activity.calories
                 it[userId] = activity.userId
-            }
+            } get Activities.id
         }
     }
 
