@@ -49,7 +49,6 @@
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-test-junit</artifactId>
             <version>${kotlin.version}</version>
-            <scope>test</scope>
         </dependency>
         <!-- Javalin REST service -->
         <dependency>
@@ -127,7 +126,6 @@
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <version>2.3.232</version>
-            <scope>test</scope>
         </dependency>
         <!-- json dependency for serialising joda date time -->
         <dependency>
@@ -159,6 +157,18 @@
             <artifactId>unirest-object-mappers-gson</artifactId>
             <version>${unirest-object-mappers-gson.version}</version>
         </dependency>
+        <!-- adding Vue -->
+        <dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>vue</artifactId>
+            <version>3.5.43</version>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>axios</artifactId>
+            <version>1.20.0</version>
+        </dependency>
+
 
     </dependencies>
 

@@ -6,6 +6,8 @@ import ie.setu.utils.jsonObjectMapper
 import io.javalin.Javalin
 import io.javalin.config.JavalinConfig
 import io.javalin.json.JavalinJackson
+import io.javalin.plugin.bundled.JavalinVuePlugin
+import io.javalin.vue.VueComponent
 
 class ServerConfig {
 
@@ -15,6 +17,13 @@ class ServerConfig {
             config.jsonMapper(
                 JavalinJackson(jsonObjectMapper())
             )
+            config.registerPlugin(
+                JavalinVuePlugin { vue ->
+                    vue.vueInstanceNameInJs = "app"
+                }
+            )
+            config.staticFiles.add("/META-INF/resources")
+
             config.routes.exception(Exception::class.java) { e, ctx ->
                 e.printStackTrace()
             }
@@ -44,6 +53,9 @@ class ServerConfig {
         config.routes.delete("/api/activities/{activity-id}", ActivityController::deleteActivityByActivityId)
         config.routes.get("/api/users/{user-id}/activities", ActivityController::getActivitiesByUserId)
         config.routes.delete("/api/users/{user-id}/activities", ActivityController::deleteActivityByUserId)
+
+        // Vue
+        config.routes.get("/", VueComponent("<home-page></home-page>"))
     }
 
     private fun getRemoteAssignedPort(): Int {
