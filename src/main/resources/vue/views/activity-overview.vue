@@ -20,7 +20,7 @@
       <tbody>
         <tr v-for="activity in activities" :key="activity.id">
           <td>{{ activity.id }}</td>
-          <td>{{ activity.description }}</td>
+          <td><a :href="`/activities/${activity.id}`">{{ activity.description }}</a></td>
           <td>{{ activity.duration }}</td>
           <td>{{ activity.calories }}</td>
           <td>{{ new Date(activity.started).toLocaleString() }}</td>
