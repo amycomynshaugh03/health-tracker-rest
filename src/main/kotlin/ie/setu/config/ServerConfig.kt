@@ -60,6 +60,8 @@ class ServerConfig {
         config.routes.get("/users/{user-id}", VueComponent("<user-profile></user-profile>"))
         config.routes.get("/users/{user-id}/activities", VueComponent("<user-activity-overview></user-activity-overview>"))
         config.routes.get("/activities", VueComponent("<activity-overview></activity-overview>"))
+        config.routes.get("/activities/{activity-id}", VueComponent("<activity-profile></activity-profile>"))
+        config.routes.get("/search", VueComponent("<user-search></user-search>"))
     }
 
     private fun getRemoteAssignedPort(): Int {
