@@ -71,6 +71,7 @@ class DbConfig {
             addUser("Mickey", "Mickey@mouse.com")
             addUser("Homer Simpson", "Homer@simpson.com")
             addUser("Marge Simpson", "Marge@simpson.com")
+            addUser("Bart Simpson", "Bart@simpson.com")
 
             addActivity("Morning walk", 30.0, 150, 1)
             addActivity("Yoga", 45.0, 200, 1)
@@ -79,7 +80,7 @@ class DbConfig {
             addActivity("Weights", 40.0, 300, 3)
             addActivity("Afternoon swim", 25.6, 280, 4)
         }
-        logger.info { "Local test data added: 4 users, 6 activities" }
+        logger.info { "Local test data added: 5 users, 6 activities" }
     }
 
     private fun addUser(userName: String, userEmail: String) {
